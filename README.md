@@ -10,28 +10,38 @@ and addressee labels, with [elephant-names-test](https://github.com/munimtechnol
 
 **Question.** The 2016 study classified the addressee of each call from its acoustics, within
 each emitter, and found accuracy above chance (for example bat F6: balanced accuracy 50% against
-33% chance, p < 0.01). Its cross-validation left out one vocalization at a time, so calls from
-the same file, interaction and recording day could sit in both the training and the test set.
-Calls recorded close together share recording conditions, the bat's state and, often, the
-addressee. Does addressee information survive when the test is blocked by file and by day, and
-is a blocked test powerful enough to see a real addressee effect of the reported size?
+33% chance, p < 0.01). Its cross-validation left out one vocalization at a time, and its
+permutation null shuffled labels freely, so calls from the same recording day could sit in both
+the training and the test set, and the null did not keep which addressees were called on which
+days. Does addressee information survive a null that keeps each emitter's day-by-day addressee
+mix, and is that test powerful enough to see a real effect of the reported size?
 
-**Status (2026-11-20).** Step 1 only: `describe_bats.py` (job `bat-addressee-describe-v1`)
-downloads the two public label files of the dataset (Prat, Taub, Pratt & Yovel 2017,
-*Scientific Data* 4:170143; figshare collection 3666502, CC0), describes every column, and
-counts how emitters, addressees, contexts, files, days and recording channels are arranged. It
-also reads only the central directory of each audio archive (no audio is downloaded). It
-computes no acoustic statistic and nothing about addressee information. The test itself will be
-pre-registered (design, null, power check, decision rules and grader) after this description
-and before any acoustic feature is computed.
+**Status (2026-11-20).**
 
-**Why this is open.** We searched for a re-analysis of the addressee result with blocked
-cross-validation and found none (2026-11-20). If we missed one, please open an issue.
+1. `describe_bats.py` (job `bat-addressee-describe-v1`): a label-only description of the dataset
+   (Prat, Taub, Pratt & Yovel 2017, *Scientific Data* 4:170143; figshare collection 3666502, CC0).
+   No acoustic statistic.
+2. **[BAT-PREREG.md](BAT-PREREG.md)**: the test, registered before any acoustic feature was
+   computed. The published pipeline (64 MFCC, GMM-UBM, leave-one-call-out) is re-run on the two
+   75-day colonies, and its balanced accuracy is compared with a null that permutes addressee
+   labels only **within emitter x recording day** (primary), next to the published-style free
+   null (reproduction), a context x day null and leave-one-day-out (secondary). Calibration uses
+   "confound worlds" (labels tied to the day, not the call); power uses synthetic addressee
+   effects matched to the observed accuracy. Verdicts: ADDRESSEE_SIGNAL_SURVIVES_DAY_BLOCKING,
+   NOT_DETECTED_WITH_POWER, UNDERPOWERED, plus gates. Code `bat_addressee.py` (job
+   `bat-addressee-test-v1`); a grader will be published before the result is read.
+
+**Why this is open.** We searched for a re-analysis of the addressee result that blocks by
+recording day and found none (2026-11-20; prior art on emitter identity is credited in the
+pre-registration). If we missed one, please open an issue.
 
 ## Code
 
-* `describe_bats.py`: the label-only description (stdlib Python).
-* `test_describe_bats.py`: its tests (`python -m unittest -v test_describe_bats`).
+* `describe_bats.py`, `test_describe_bats.py`: the label-only description (stdlib Python).
+* `bat_addressee.py`, `test_bat_addressee.py`: the registered test (Python 3.12, numpy,
+  scikit-learn). Run the tests with `python -m unittest -v test_bat_addressee` and the job with
+  `python bat_addressee.py --data-dir DATA --out-dir OUT`. The audio is read one recording at a
+  time by HTTP Range requests from the public archives; only features are kept.
 
 Data are not redistributed here; the job fetches them from figshare at run time.
 
