@@ -29,7 +29,15 @@ mix, and is that test powerful enough to see a real effect of the reported size?
    "confound worlds" (labels tied to the day, not the call); power uses synthetic addressee
    effects matched to the observed accuracy. Verdicts: ADDRESSEE_SIGNAL_SURVIVES_DAY_BLOCKING,
    NOT_DETECTED_WITH_POWER, UNDERPOWERED, plus gates. Code `bat_addressee.py` (job
-   `bat-addressee-test-v1`); a grader will be published before the result is read.
+   `bat-addressee-test-v1`, queued).
+3. **[test_bat_results.py](test_bat_results.py)**: the grader, published before the job has
+   produced any result. Without importing `bat_addressee.py`, it re-derives from the raw output
+   the gates, T (mean balanced accuracy) of every test, bounds on every p value from the stored
+   null distributions, the confound-world and power counts, the effect-matched effect size, the
+   verdict, the six predictions and the Brier score, and it fixes the exact lines that
+   `RESULTS-BAT.md` must contain. Once `results/bat/bat_results.json` is committed:
+   `python test_bat_results.py --render results/bat/bat_results.json RESULTS-BAT.md`, then
+   `python -m unittest -v test_bat_results`.
 
 **Why this is open.** We searched for a re-analysis of the addressee result that blocks by
 recording day and found none (2026-11-20; prior art on emitter identity is credited in the
@@ -42,6 +50,8 @@ pre-registration). If we missed one, please open an issue.
   scikit-learn). Run the tests with `python -m unittest -v test_bat_addressee` and the job with
   `python bat_addressee.py --data-dir DATA --out-dir OUT`. The audio is read one recording at a
   time by HTTP Range requests from the public archives; only features are kept.
+* `test_bat_results.py`: the grader (stdlib Python; its toy tests always run, the result tests
+  run once the result is committed).
 
 Data are not redistributed here; the job fetches them from figshare at run time.
 
