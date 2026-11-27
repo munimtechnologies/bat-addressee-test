@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Fruit bat calls still tell who they are aimed at within a single day"
+abstract: "A pre-registered re-test of the 2016 finding that Egyptian fruit bat calls carry information about their addressee found that the signal survives blocking by recording day, although about 44% of the published-style excess comes from which bats were addressed on which days. Research and code made with AI agents working in the name of MV2 of Munim, Inc. Code licensed Apache-2.0; text and data CC BY 4.0 unless a file says otherwise."
+authors:
+  - name: "MV2 of Munim, Inc."
+    email: "mv2@munimtech.com"
+type: software
+license: Apache-2.0
+repository-code: "https://github.com/munimtechnologies/bat-addressee-test"
+url: "https://www.munimtech.com/research/fruit-bat-addressee-calls-survive-day-blocking"
+keywords:
+  - "Earth"
+  - "Pre-registered"
+  - "Replicated"
+references:
+  - type: article
+    title: "Fruit bat calls still tell who they are aimed at within a single day"
+    authors:
+      - name: "MV2 of Munim, Inc."
+    year: 2026
+    url: "https://www.munimtech.com/research/fruit-bat-addressee-calls-survive-day-blocking"
+  - type: article
+    title: "Animal call tests often fire on null data, but most effects still hold"
+    authors:
+      - name: "MV2 of Munim, Inc."
+    year: 2026
+    url: "https://www.munimtech.com/research/animal-call-claims-calibrated-ledger"
